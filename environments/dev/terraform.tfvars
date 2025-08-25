@@ -10,3 +10,4 @@ kv_secrets = {
     secret_value = "DbPassword@123456"
     }
 }
+

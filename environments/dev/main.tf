@@ -8,6 +8,7 @@ locals {
 }
 module "resource_group" {
   source   = "../../module/azurerm_resource_group"
+  
   rg_name  = "todoinfra-rg"
   location = "centralindia"
   tags = local.common_tags
@@ -24,6 +25,19 @@ module "storage_account" {
   tags = local.common_tags
 
 }
+
+module "storage_account_02" {
+  depends_on               = [module.resource_group]
+  source                   = "../../module/azurerm_storage_account"
+  storage_account_name     = "rakb35todoinfrastg2"
+  location                 = module.resource_group.rg_location
+  rg_name                  = module.resource_group.rg_name
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+  tags = local.common_tags
+
+}
+
 
 module "container_registry" {
   depends_on = [ module.resource_group ]
