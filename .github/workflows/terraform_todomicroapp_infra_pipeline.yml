@@ -32,7 +32,7 @@ jobs:
         subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
 
     - name: Terraform init azurerm backend
-      working-directory: ./environment/dev
+      working-directory: /environment/dev
       run: |
         terraform init \
         -backend-config="resource_group_name=rg-terraform-backend" \
@@ -45,15 +45,15 @@ jobs:
         
 
     - name: terraform-validate    
-      working-directory: ./environment/dev
+      working-directory: /environment/dev
       run: terraform validate
 
     - name: terraform-fmt    
-      working-directory: ./environment/dev
+      working-directory: /environment/dev
       run: terraform fmt 
 
     - name: terraform-plan    
-      working-directory: ./environment/dev
+      working-directory: /environment/dev
       if: github.event_name == 'pull_request'
       run: terraform plan -out=tfplan
 
@@ -62,7 +62,7 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         name: tfplan
-        path: ./environment/dev/tfplan
+        path: /environment/dev/tfplan
         
   ManualApproval:
     runs-on: ubuntu-latest
@@ -95,7 +95,7 @@ jobs:
         subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
 
     - name: Terraform init azurerm backend
-      working-directory: ./environment/dev
+      working-directory: /environment/dev
       run: |
         terraform init \
         -backend-config="resource_group_name=rg-terraform-backend" \
@@ -108,12 +108,12 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: tfplan
-        path: ./environment/dev
+        path: /environment/dev
       
 
     - name: terraform apply   
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      working-directory: ./environment/dev
+      working-directory: /environment/dev
       run: terraform apply --auto-approve "./tfplan"
       
          
