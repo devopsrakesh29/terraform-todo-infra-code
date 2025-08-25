@@ -35,8 +35,8 @@ jobs:
       working-directory: ./environments/dev
       run: |
         terraform init \
-        -backend-config="resource_group_name=rg-terraform-backend" \
-        -backend-config="storage_account_name=mytfstateaccount" \
+        -backend-config="resource_group_name=backendrak-rg" \
+        -backend-config="storage_account_name=rakeshtfstg" \
         -backend-config="container_name=tfstate" \
         -backend-config="key=dev.terraform.tfstate"      
 
@@ -98,8 +98,8 @@ jobs:
       working-directory: ./environments/dev
       run: |
         terraform init \
-        -backend-config="resource_group_name=rg-terraform-backend" \
-        -backend-config="storage_account_name=mytfstateaccount" \
+        -backend-config="resource_group_name=backendrak-rg" \
+        -backend-config="storage_account_name=rakeshtfstg" \
         -backend-config="container_name=tfstate" \
         -backend-config="key=dev.terraform.tfstate"      
 
