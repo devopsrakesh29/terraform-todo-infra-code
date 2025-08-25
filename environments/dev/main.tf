@@ -9,8 +9,8 @@ locals {
 module "resource_group" {
   source   = "../../module/azurerm_resource_group"
   for_each = var.resource_groups
-  rg_name  = "todoinfra-rg"
-  location = "centralindia"
+  rg_name  = each.value.rg_name
+  location = each.value.location
   tags = local.common_tags
 }
 
