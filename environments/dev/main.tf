@@ -44,7 +44,7 @@ module "aks" {
   rg_name = module.resource_group.rg_name
   dns_prefix = "todorakaksdns"
   aks_node_count = 1
-  vm_size = "Standard_D2_v2"
+  vm_size = "Standard_B2ms"
   tags = local.common_tags
 
 }
@@ -73,7 +73,7 @@ module "azurerm_key_vault_secret" {
 module "sql_server" {
 source = "../../module/azurerm_sql_server"
 depends_on = [ module.azurerm_key_vault_secret ]
-sql_server_name = "todosqlserver"
+sql_server_name = "rakb35todosqlserver"
 rg_name = module.resource_group.rg_name
 location = module.resource_group.rg_location
 tags = local.common_tags
