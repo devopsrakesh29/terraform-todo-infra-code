@@ -57,12 +57,12 @@ jobs:
 
     - name: terraform-plan    
       working-directory: ./environments/dev
-      if: github.event_name == 'pull_request' # pull request pe hi chalegi
+      #if: github.event_name == 'pull_request' # pull request pe hi chalegi
       run: terraform plan -out=tfplan
 
     - name: Upload Plan
       uses: actions/upload-artifact@v4
-      if: github.event_name == 'pull_request' # pull request pe hi chalegi
+      #if: github.event_name == 'pull_request' # pull request pe hi chalegi
       with:
         name: tfplan
         path: ./environments/dev/tfplan
