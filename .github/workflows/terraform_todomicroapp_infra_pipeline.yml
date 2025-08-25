@@ -2,10 +2,12 @@ name: terraform_todomicroapp_infra_pipeline
 
 on: 
  pull_request:  
+   branches:
+   - main
  push:
    branches:
    - main
-   - feature/*
+   
 
 permissions:
   id-token: write
@@ -67,6 +69,7 @@ jobs:
         
   ManualApproval:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: build
     timeout-minutes: 60
     steps:
@@ -80,6 +83,7 @@ jobs:
 
   apply:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: ManualApproval
     steps:
     - name: checkout to repo
@@ -113,7 +117,7 @@ jobs:
       
 
     - name: terraform apply   
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
       working-directory: ./environments/dev
       run: terraform apply --auto-approve "./tfplan"
       
