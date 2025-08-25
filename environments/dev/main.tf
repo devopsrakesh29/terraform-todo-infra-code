@@ -16,7 +16,7 @@ module "resource_group" {
 module "storage_account" {
   depends_on               = [module.resource_group]
   source                   = "../../module/azurerm_storage_account"
-  storage_account_name     = "todoinfrastg"
+  storage_account_name     = "rakb35todoinfrastg"
   location                 = module.resource_group.rg_location
   rg_name                  = module.resource_group.rg_name
   account_tier             = "Standard"
