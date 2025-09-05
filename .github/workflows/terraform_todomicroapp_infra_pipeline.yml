@@ -1,12 +1,15 @@
 name: terraform_todomicroapp_infra_pipeline
 
-on: 
- pull_request:  
-   branches:
-   - main
- push:
-   branches:
-   - main
+# on: 
+#  pull_request:  
+#    branches:
+#    - main
+#  push:
+#    branches:
+#    - main
+
+on:
+  workflow_dispatch:
    
 
 permissions:
@@ -30,22 +33,13 @@ jobs:
     - name: Azure Login
       uses: Azure/login@v2.3.0
       with:
-        client-id: ${{secrets.AZURE_CLIENT_ID}}
+        client-id: ${{secrets.AZURE_SECRET_ID}}
         tenant-id: ${{secrets.AZURE_TENANT_ID}}
         subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
 
     - name: Terraform init azurerm backend
       working-directory: ./environments/dev
-      run: |
-        terraform init \
-        -backend-config="resource_group_name=backendrak-rg" \
-        -backend-config="storage_account_name=rakeshtfstg" \
-        -backend-config="container_name=tfstatefile" \
-        -backend-config="key=devgha.terraform.tfstate"      
-
-
-
-        
+      run: terraform init
 
     - name: terraform-validate    
       working-directory: ./environments/dev
@@ -71,24 +65,24 @@ jobs:
         name: tfplan
         path: ./environments/dev/tfplan
         
-  ManualApproval:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: build
-    timeout-minutes: 60
-    steps:
-    - name: Approve Workflow [Manual]
-      uses: trstringer/manual-approval@v1
-      with:
-         approvers: RakeshKSingh29
-         secret: ${{ secrets.GITHUB_TOKEN }}
-         issue-title: check the plan and approve
+  # ManualApproval:
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #   needs: build
+  #   timeout-minutes: 60
+  #   steps:
+  #   - name: Approve Workflow [Manual]
+  #     uses: trstringer/manual-approval@v1
+  #     with:
+  #        approvers: RakeshKSingh29
+  #        secret: ${{ secrets.GITHUB_TOKEN }}
+  #        issue-title: check the plan and approve
 
 
   apply:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: ManualApproval
+    needs: build
     steps:
     - name: checkout to repo
       uses: actions/checkout@v4
@@ -99,18 +93,14 @@ jobs:
     - name: Azure Login
       uses: Azure/login@v2.3.0
       with:
-        client-id: ${{secrets.AZURE_CLIENT_ID}}
+        client-id: ${{secrets.AZURE_SECRET_ID}}
         tenant-id: ${{secrets.AZURE_TENANT_ID}}
         subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
 
     - name: Terraform init azurerm backend
       working-directory: ./environments/dev
-      run: |
-        terraform init \
-        -backend-config="resource_group_name=backendrak-rg" \
-        -backend-config="storage_account_name=rakeshtfstg" \
-        -backend-config="container_name=tfstatefile" \
-        -backend-config="key=devgha.terraform.tfstate"      
+      run: terraform init
+             
 
 
     - name: download plan
