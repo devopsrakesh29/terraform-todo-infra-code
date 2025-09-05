@@ -81,6 +81,7 @@ jobs:
 
   apply:
     runs-on: ubuntu-latest
+    environment: dev
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: build
     steps:
