@@ -17,7 +17,7 @@ module "resource_group" {
 module "storage_account" {
   depends_on               = [module.resource_group]
   source                   = "../../module/azurerm_storage_account"
-  storage_account_name     = "rakb35todoinfrastg"
+  storage_account_name     = "rakeshb35todoinfrastg"
   location                 = module.resource_group.rg_location
   rg_name                  = module.resource_group.rg_name
   account_tier             = "Standard"
@@ -29,7 +29,7 @@ module "storage_account" {
 module "storage_account_02" {
   depends_on               = [module.resource_group]
   source                   = "../../module/azurerm_storage_account"
-  storage_account_name     = "rakb35todoinfrastg2"
+  storage_account_name     = "rakeshb35todoinfrastg2"
   location                 = module.resource_group.rg_location
   rg_name                  = module.resource_group.rg_name
   account_tier             = "Standard"
@@ -43,7 +43,7 @@ module "container_registry" {
   depends_on = [ module.resource_group ]
   source = "../../module/azurerm_container_registry"
 
-  acr_name = "todorakacr"
+  acr_name = "rakeshb35todoinfrastgacr"
   rg_name = module.resource_group.rg_name
   location = module.resource_group.rg_location
   tags = local.common_tags
@@ -66,7 +66,7 @@ module "aks" {
 module "key_vault" {
   source = "../../module/azurerm_key_vault"
   depends_on = [ module.resource_group ]
-  kv_name = "rakeshtodokv"
+  kv_name = "b35rakeshtodokv"
   location = module.resource_group.rg_location
   rg_name = module.resource_group.rg_name
   tags = local.common_tags
